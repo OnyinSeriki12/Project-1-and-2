@@ -1,4 +1,4 @@
-# 1. Print your name
+    7  # 1. Print your name
     8  echo  ‘’Sarah Onyinoiyi Seriki’’
     9  # 2. Create a folder titled your name
    10  mkdir -p "Sarah_Onyinoiyi_Seriki"
@@ -153,7 +153,3 @@
   159  conda env list
   160  conda clean -a -y
   161  #The end of project 2 , no space i could not download the last one 
-
-  https://github.com/OnyinSeriki12/Project-1-and-2/edit/main/README.md
-
-  https://www.linkedin.com/posts/sarah-onyinoyi-seriki-627247266_bioinformatics-hackbio-learningjourney-ugcPost-7368259598627094530-IBke?utm_source=share&utm_medium=member_android
