@@ -1,10 +1,4 @@
-  1  history
-    2  ls
-    3  rm -r biocomputing 
-    4  rm README-cloudshell.txt 
-    5  rm -r "Sarah Onyinoyi Seriki" 
-    6  pwd
-    7  # 1. Print your name
+# 1. Print your name
     8  echo  ‘’Sarah Onyinoiyi Seriki’’
     9  # 2. Create a folder titled your name
    10  mkdir -p "Sarah_Onyinoiyi_Seriki"
@@ -159,10 +153,7 @@
   159  conda env list
   160  conda clean -a -y
   161  #The end of project 2 , no space i could not download the last one 
-  162  pwd
-  163  ls
-  164  history
 
-https://github.com/OnyinSeriki12/Project-1-and-2/blob/main/README.md
+  https://github.com/OnyinSeriki12/Project-1-and-2/edit/main/README.md
 
-https://www.linkedin.com/posts/sarah-onyinoyi-seriki-627247266_bioinformatics-hackbio-learningjourney-ugcPost-7368259598627094530-IBke?utm_source=share&utm_medium=member_android
+  https://www.linkedin.com/posts/sarah-onyinoyi-seriki-627247266_bioinformatics-hackbio-learningjourney-ugcPost-7368259598627094530-IBke?utm_source=share&utm_medium=member_android
