@@ -1,120 +1,164 @@
- 4  # Task 1: Print your name
-    5  echo "OnyiSeriki"
-    6  # Task 2: Create a folder titled your name
-    7  mkdir -p OnyiSeriki
-    8  # Task 3: Create another new directory titled biocomputing and change to that directory
-    9  mkdir -p biocomputing && cd biocomputing
-   10  wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.fna
-   11  https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk
-   12  https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk 
-   13  # Task 5: Move the .fna file to the folder titled your name
-   14  mv wildtype.fna ../OnyiSeriki/
-   15  # Task 6: Delete the duplicate gbk file
-   16  rm wildtype_duplicate.gbk
-   17  # Task 7: Confirm if the .fna file is mutant or wild type
-   18  echo "Task 7: Checking if .fna file is mutant or wild type"
-   19  cd ../OnyiSeriki
-   20  if grep -q "tatatata" wildtype.fna; then     echo "✓ File contains MUTANT sequence (tatatata)";     file_type="mutant"; else     echo "✓ File contains WILD TYPE sequence (tata)";     file_type="wildtype"; fi
-   21  echo
-   22  # Task 8: If mutant, print all matching lines into a new file
-   23  echo "Task 8: Processing mutant sequences if present"
-   24  if [ "$file_type" = "mutant" ]; then     grep "tatatata" wildtype.fna > mutant_sequences.txt;     echo "✓ Mutant sequences saved to mutant_sequences.txt";     echo "Number of mutant lines found: $(wc -l < mutant_sequences.txt)"; else           echo "✓ No mutant sequences found - file is wild type"; fi
-   25  echo
-   26  # Change back to biocomputing directory for gbk file analysis
-   27  cd ../biocomputing
-   28  # Task 9: Count number of lines (excluding header) in the .gbk file
-   29  echo "Task 9: Counting lines in .gbk file (excluding header)"
-   30  total_lines=$(wc -l < wildtype.gbk)
-   31  lines_excluding_header=$((total_lines - 1))
-   32  echo "✓ Total lines in wildtype.gbk: $total_lines"
-   33  echo "✓ Lines excluding header: $lines_excluding_header"
-   34  echo
-   35  # Task 10: Print the sequence length of the .gbk file
-   36  echo "Task 10: Getting sequence length from LOCUS tag"
-   37  sequence_length=$(head -1 wildtype.gbk | awk '{print $3}')
-   38  echo "✓ Sequence length: $sequence_length bp"
-   39  echo
-   40  # Task 11: Print the source organism of the .gbk file
-   41  echo "Task 11: Getting source organism"
-   42  source_organism=$(grep "^SOURCE" wildtype.gbk | sed 's/SOURCE *//')
-   43  echo "✓ Source organism: $source_organism"
-   44  echo
-   45  # Task 12: List all the gene names of the .gbk file
-   46  echo "Task 12: Listing all gene names"
-   47  echo "Gene names found:"
-   48  grep '/gene=' wildtype.gbk | sed 's/.*\/gene="\([^"]*\)".*/\1/' | sort | uniq | nl
-   49  gene_count=$(grep '/gene=' wildtype.gbk | sed 's/.*\/gene="\([^"]*\)".*/\1/' | sort | uniq | wc -l)
-   50  echo "✓ Total unique genes found: $gene_count"
-   51  echo
-   52  # Task 13: Clear terminal and print all commands used today
-   53  echo "Task 13: Clearing terminal and showing command history"
-   54  echo "Commands used in this session:"
-   55  echo "================================="
-   56  history | tail -20
-   57  echo
-   58  # Task 14: List the files in the two folders
-   59  echo "Task 14: Listing files in both folders"
-   60  echo
-   61  echo "Files in OnyiSeriki folder:"
-   62  echo "=========================="
-   63  ls -la ../OnyiSeriki/
-   64  echo
-   65  echo "Files in biocomputing folder:"
-   66  echo "============================="
-   67  ls -la ./
-   68  echo
-   69  echo "=== Script completed successfully! ==="
-   70  echo "Summary:"
-   71  echo "- Name printed: OnyiSeriki"
-   72  echo "- Folders created: OnyiSeriki, biocomputing"
-   73  echo "- Files downloaded and processed"
-   74  echo "- Sequence analysis completed"
-   75  echo "- File type determined: $file_type"
-   76  echo "- Sequence length: $sequence_length bp"
-   77  echo "- Source organism: $source_organism"
-   78  echo "- Total genes found: $gene_count"
-   79  # End of project one
-   80  #!/bin/bash
-   81  # Bioinformatics Environment Setup Script
-   82  # Author: OnyiSeriki
-   83  # Description: Sets up a conda environment with essential bioinformatics tools
-   84  set -e  # Exit on any error
-   85  echo "=================================================="
-   86  echo "    Bioinformatics Environment Setup Script"
-   87  echo "    Author: OnyiSeriki"
-   88  echo "=================================================="
-   89  echo
-   90  # Function to print colored output
-   91  print_status() {     echo -e "\033[32m[INFO]\033[0m $1"; }
-   92  print_error() {     echo -e "\033[31m[ERROR]\033[0m $1"; }
-   93  print_warning() {     echo -e "\033[33m[WARNING]\033[0m $1"; }
-   94  # Check if conda is installed
-   95  if ! command -v conda &> /dev/null; then     print_error "Conda is not installed or not in PATH";     exit 1; fi
-   96  print_status "Step 1: Activating base conda environment..."
-   97  source $(conda info --base)/etc/profile.d/conda.sh
-   98  conda activate base
-   99  print_status "Base environment activated ✓"
-  100  echo
-  101  print_status "Step 2: Creating conda environment named 'funtools'..."
-  102  if conda env list | grep -q "^funtools "; then     print_warning "Environment 'funtools' already exists. Removing and recreating...";     conda env remove -n funtools -y; fi
-  103  conda create -n funtools -y python=3.9
-  104  print_status "Environment 'funtools' created ✓"
-  105  echo
--get available";     exit 1; fi
-  113  echo
-  114  print_status "Step 5: Running figlet with your name..."
-  115  figlet "OnyiSeriki"
-  116  echo
-  117  print_status "Adding bioconda channel if not already present..."
-  118  conda config --add channels defaults
-  119  conda config --add channels bioconda
-  120  conda config --add channels conda-forge
-  121  conda config --set channel_priority strict
-  122  print_status "Bioconda channel configured ✓"
-  123  echo
-  124  # Array of bioinformatics tools to install
-  125  tools=(     "bwa"     "blast"     "samtools"     "bedtools"     "spades"     "bcftools"     "fastp"     "multiqc" )
-  126  # Install each tool
-  127  for i in "${!tools[@]}"; do     tool="${tools[$i]}";     step=$((i + 6));     print_status "Step $step: Installing $tool through the bioconda channel...";          if conda install -c bioconda "$tool" -y; then         print_status "$tool installed successfully ✓";     else         print_error "Failed to install $tool";         exit 1;     fi;     echo; done
-  128  history
-(base) serahseriki001@cloudshell:~$ #End of project 2
+  1  history
+    2  ls
+    3  rm -r biocomputing 
+    4  rm README-cloudshell.txt 
+    5  rm -r "Sarah Onyinoyi Seriki" 
+    6  pwd
+    7  # 1. Print your name
+    8  echo  ‘’Sarah Onyinoiyi Seriki’’
+    9  # 2. Create a folder titled your name
+   10  mkdir -p "Sarah_Onyinoiyi_Seriki"
+   11  # 3. Create another new directory titled biocomputing and change to that directory with one line of command
+   12  mkdir -p biocomputing && cd biocomputing
+   13  # 4. Download the 3 files
+   14  wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.fna
+   15  wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk
+   16  wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk -O wildtype2.gbk
+   17  # 5. Move the .fna file to the folder titled your name
+   18  mv wildtype.fna ../Sarah_Onyinoiyi_Seriki/
+   19  # 6. Delete the duplicate gbk file
+   20  rm wildtype2.gbk
+   21  history
+   22  pwd
+   23  # 1. Print your name
+   24  echo "My name is Sarah Onyinoiyi Seriki"
+   25  
+   26  # 2. Create a folder titled your name
+   27  mkdir -p "Sarah_Onyinoiyi_Seriki"
+   28  # 3. Create another new directory titled biocomputing and change to that directory with one line of command
+   29  mkdir -p biocomputing && cd biocomputing
+   30  # 4. Download the 3 files
+   31  wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.fna
+   32  wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk
+   33  wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk -O wildtype2.gbk
+   34  # 5. Move the .fna file to the folder titled your name
+   35  mv wildtype.fna ../Sarah_Onyinoiyi_Seriki/
+   36  # 6. Delete the duplicate gbk file
+   37  rm wildtype2.gbk
+   38  # 7. Confirm if the .fna file is mutant or wild type (tatatata vs tata)
+   39  echo "Checking if sequence is mutant or wild type..."
+   40  if grep -q "tatatata" ../Sarah_Onyinoiyi_Seriki/wildtype.fna; then     echo "Mutant sequence found!"
+   41      grep "tatatata" ../Sarah_Onyinoiyi_Seriki/wildtype.fna > ../Sarah_Onyinoiyi_Seriki/mutant_lines.txt; else     echo "Wild type sequence"; fi
+   42  # 9. Count number of lines (excluding header) in the .gbk file
+   43  echo "Number of sequence lines (excluding header):"
+   44  grep -v "^LOCUS" wildtype.gbk | wc -l
+   45  # 10. Print the sequence length of the .gbk file (from LOCUS tag)
+   46  echo "Sequence length from LOCUS line:"
+   47  grep "^LOCUS" wildtype.gbk | awk '{print $3, $4}'
+   48  # 11. Print the source organism of the .gbk file (from SOURCE tag)
+   49  echo "Source organism:"
+   50  grep -m 1 "SOURCE" wildtype.gbk | sed 's/  */ /g'
+   51  # 12. List all the gene names in the .gbk file
+   52  echo "Gene names in .gbk file:"
+   53  grep "/gene=" wildtype.gbk
+   54  # 13. Clear your terminal space and print all commands used today
+   55  clear
+   56  echo "Commands history for today:"
+   57  history
+   58  # 14. List the files in the two folders
+   59  echo "Files in biocomputing folder:"
+   60  ls
+   61  echo "Files in Sarah_Onyinoiyi_Seriki folder:"
+   62  ls ../Sarah_Onyinoiyi_Seriki
+   63  history
+   64  echo "Step 9: Number of sequence lines (excluding header):"
+   65  grep -v "^LOCUS" wildtype.gbk | wc -l
+   66  Step 9: Number of sequence lines (excluding header):
+   67  12345 
+   68  ls
+   69  rm 
+   70  rm biocomputing
+   71  rm biocomputing.txt
+   72  rm -r biocomputing 
+   73  rm README-cloudshell.txt 
+   74  rm -r Sarah_Onyinoiyi_Seriki 
+   75  pwd
+   76  # 1. Print your name
+   77  echo  ‘’Sarah Onyinoiyi Seriki’’
+   78  # 2. Create a folder titled your name
+   79  mkdir -p "Sarah_Onyinoiyi_Seriki"
+   80  # 3. Create another new directory titled biocomputing and change to that directory with one line of command
+   81  mkdir -p biocomputing && cd biocomputing
+   82  # 4. Download the 3 files
+   83  wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.fna
+   84  wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk
+   85  wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk -O wildtype2.gbk
+   86  # 5. Move the .fna file to the folder titled your name
+   87  mv wildtype.fna ../Sarah_Onyinoiyi_Seriki/
+   88  # 6. Delete the duplicate gbk file
+   89  rm wildtype2.gbk
+   90  # 7. Confirm if the .fna file is mutant or wild type (tatatata vs tata)
+   91  echo "Checking if sequence is mutant or wild type..."
+   92  if grep -q "tatatata" ../Sarah_Onyinoiyi_Seriki/wildtype.fna; then     echo "Mutant sequence found!"; else     echo "Wild type sequence"; fi 
+   93  # 7 & 8. Confirm if the .fna file is mutant or wild type (tatatata vs tata)
+   94  echo "Checking if sequence is mutant or wild type..."
+   95  if grep -q "tatatata" ../Sarah_Onyinoiyi_Seriki/wildtype.fna; then     echo "Mutant sequence found!"
+   96      grep "tatatata" ../Sarah_Onyinoiyi_Seriki/wildtype.fna > ../Sarah_Onyinoiyi_Seriki/mutant_lines.txt; else     echo "Wild type sequence"; fi 
+   97  # 9. Count number of lines (excluding header) in the .gbk file
+   98  echo "Number of sequence lines (excluding header):"
+   99  grep -v "^LOCUS" wildtype.gbk | wc -l 
+  100  # 10. Print the sequence length of the .gbk file (from LOCUS tag)
+  101  echo "Sequence length from LOCUS line:"
+  102  grep "^LOCUS" wildtype.gbk | awk '{print $3, $4}' 
+  103  # 11. Print the source organism of the .gbk file (from SOURCE tag)
+  104  echo "Source organism:"
+  105  grep -m 1 "SOURCE" wildtype.gbk | sed 's/  */ /g' 
+  106  # 12. List all the gene names in the .gbk file
+  107  echo "Gene names in .gbk file:"
+  108  grep "/gene=" wildtype.gbk 
+  109  # 13. Clear your terminal space and print all commands used today
+  110  clear
+  111  echo "Commands history for today:"
+  112  history 
+  113  # 14. List the files in the two folders
+  114  echo "Files in biocomputing folder:"
+  115  ls
+  116  echo "Files in Sarah_Onyinoiyi_Seriki folder:"
+  117  ls ../Sarah_Onyinoiyi_Seriki 
+  118  #End of project 1
+  119  # 1. Activate your base conda environment
+  120  conda activate base
+  121  pwd
+  122  source ~/anaconda3/etc/profile.d/conda.sh
+  123  conda activate base
+  124  pwd
+  125  # 1. Download and install Miniconda (if conda is not found)
+  126  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+  127  bash miniconda.sh -b -p $HOME/miniconda 
+  128  # 2. Initialize conda
+  129  eval "$($HOME/miniconda/bin/conda shell.bash hook)" 
+  130  # 3. Activate base environment
+  131  conda activate base 
+  132  # 2. Create a conda environment named funtools
+  133  conda create -n funtools python=3.9 -y
+  134  conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+  135  conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+  136  conda create -n funtools python=3.9 -y
+  137  conda activate funtools
+  138  (funtools) serikionyi@cloudshell:~$
+  139  conda install -c conda-forge figlet -y
+  140  sudo apt-get update && sudo apt-get install -y figlet
+  141  figlet "Sarah Onyinoiyi Seriki"
+  142  conda install -c bioconda blast -y
+  143  conda install -c bioconda samtools -y
+  144  conda install -c bioconda bedtools -y
+  145  conda install -c bioconda spades -y
+  146  conda install -c bioconda bcftools -y
+  147  conda install -c conda-forge openblas -y
+  148  # Make sure you're in the funtools environment
+  149  conda activate funtools  
+  150  # Install fastp from bioconda
+  151  conda install -c bioconda fastp -y
+  152  fastp --version
+  153  # Make sure you're in the funtools environment
+  154  conda activate funtools  
+  155  # Install MultiQC from bioconda
+  156  conda install -c bioconda multiqc -y
+  157  df -h
+  158  conda clean -a -y
+  159  conda env list
+  160  conda clean -a -y
+  161  #The end of project 2 , no space i could not download the last one 
+  162  pwd
+  163  ls
+  164  history
