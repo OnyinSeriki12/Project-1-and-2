@@ -162,3 +162,7 @@
   162  pwd
   163  ls
   164  history
+
+https://github.com/OnyinSeriki12/Project-1-and-2/blob/main/README.md
+
+https://www.linkedin.com/posts/sarah-onyinoyi-seriki-627247266_bioinformatics-hackbio-learningjourney-ugcPost-7368259598627094530-IBke?utm_source=share&utm_medium=member_android
